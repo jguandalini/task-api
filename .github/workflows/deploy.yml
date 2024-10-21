@@ -1,4 +1,4 @@
-name: Deploy to Heroku
+name: Deploy to Render
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,23 +15,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.8'  # ou a versão que você estiver usando
 
-      - name: Create virtual environment and install dependencies
+      - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip setuptools
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Login to Heroku
+      - name: Deploy to Render
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          heroku git:remote -a <SEU-NOME-DE-APP-HEROKU>
-
-      - name: Deploy to Heroku
-        run: |
-          source venv/bin/activate
-          git push heroku main
+          curl -X POST https://api.render.com/deploy/srv-xxxxxxxx  # substitua 'srv-xxxxxxxx' pelo ID do seu serviço
 
