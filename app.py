@@ -29,6 +29,10 @@ def delete_task(task_id):
     tasks = [t for t in tasks if t.get('id') != task_id]
     return jsonify({'result': 'Task deleted'})
 
+@app.route('/tasks/count', methods=['GET'])
+def task_count():
+    return jsonify({"task_count": len(tasks)}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
 
